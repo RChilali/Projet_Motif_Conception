@@ -3,7 +3,7 @@ package src.model.actions.unary;
 import src.model.actions.Action;
 import src.model.individual.Individual;
 
-public class BarkAction implements Action {
+public class BarkAction extends Action {
     @Override
     public boolean validate(Individual source, Individual target) {
         return source.getStats().getVitality() > 0; // Can bark if alive

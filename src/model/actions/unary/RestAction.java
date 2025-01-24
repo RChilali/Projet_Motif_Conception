@@ -3,7 +3,7 @@ package src.model.actions.unary;
 import src.model.actions.Action;
 import src.model.individual.Individual;
 
-public class RestAction implements Action {
+public class RestAction extends Action {
     @Override
     public boolean validate(Individual source, Individual target) {
         return source.getStats().getVitality() < 100; // Can rest if vitality is not full

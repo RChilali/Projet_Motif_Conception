@@ -1,8 +1,9 @@
 package src.model.individual;
 
-import src.model.stats.Stats;
-import src.model.registry.SpeciesActionRegistry;
 import src.model.actions.Action;
+import src.model.actions.registry.SpeciesActionRegistry;
+import src.model.stats.Stats;
+
 import java.util.Map;
 
 public class Dog extends Individual {
@@ -13,8 +14,13 @@ public class Dog extends Individual {
         this.gender = gender;
     }
 
-    public char getGender() { return gender; }
-    public void setGender(char gender) { this.gender = gender; }
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
 
     @Override
     public void performAction(String actionName, Individual target) {

@@ -1,7 +1,7 @@
 package src.model.individual;
 
 import src.model.stats.Stats;
-import src.model.registry.SpeciesActionRegistry;
+import src.model.actions.registry.SpeciesActionRegistry;
 import src.model.actions.Action;
 import java.util.Map;
 

@@ -1,23 +1,48 @@
 package src.controller;
 
-import src.model.individual.Individual;
-import src.model.registry.SpeciesActionRegistry;
 import src.model.actions.Action;
-import src.view.SimulationView;
+import src.model.actions.registry.SpeciesActionRegistry;
+import src.model.individual.Individual;
+import src.model.simulation.ActionModel;
+import src.view.ActionView;
+
 import java.util.Map;
 
 
 public class ActionController {
-    private SimulationView view;
 
-    public ActionController(SimulationView view) {
+    private ActionView view;
+
+    private ActionModel model;
+
+    public ActionController(ActionModel model) {
+        this.model = model;
+    }
+
+    public void setView(ActionView view) {
         this.view = view;
     }
 
+    public void manageInsertAction() {
+        String id = view.insertIndividualId();
+        String species = view.insertSpecies();
+        String actionName = view.insertActionName();
+
+        Map<String, Action> actionsForSpecies = SpeciesActionRegistry.getActionsForSpecies(species);
+        if (!actionsForSpecies.containsKey(actionName)) {
+            model.addAction(id, actionName);
+        }
+    }
+
     // Validate and execute an action
-    public void executeAction(String actorId, String actionName, String targetId) {
-        Individual actor = view.getIndividualById(actorId);
-        Individual target = view.getIndividualById(targetId);
+    public void manageExecuteAction() {
+
+        String actorId = view.insertIndividualId();
+        String actionName = view.insertActionName();
+        String targetId = view.insertIndividualId();
+
+        Individual actor = model.getIndividualById(actorId);
+        Individual target = model.getIndividualById(targetId);
 
         if (actor == null) {
             view.displayErrorMessage("Actor not found: " + actorId);
@@ -37,7 +62,12 @@ public class ActionController {
             return;
         }
 
-        action.execute(actor, target); // Execute the action
-        view.actualise(); // Refresh the view
+        if (target == null && !SpeciesActionRegistry.getActionsForSpecies(actor.getSpecies()).get(actionName).validate(actor, null)) {
+            view.displayErrorMessage("Invalid target for action: " + actionName);
+            return;
+        }
+
+        actor.performAction(actionName, target);
+        model.notifyObservers();
     }
 }

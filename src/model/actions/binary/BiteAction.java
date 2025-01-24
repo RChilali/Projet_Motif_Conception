@@ -3,7 +3,7 @@ package src.model.actions.binary;
 import src.model.actions.Action;
 import src.model.individual.Individual;
 
-public class BiteAction implements Action {
+public class BiteAction extends Action {
     @Override
     public boolean validate(Individual source, Individual target) {
         return source != target 

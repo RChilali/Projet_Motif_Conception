@@ -1,12 +1,13 @@
-package src.model.registry;
+package src.model.actions.registry;
 
 import src.model.actions.Action;
-import src.model.actions.unary.BarkAction;
 import src.model.actions.binary.BiteAction;
 import src.model.actions.binary.StompAction;
-import java.util.Map;
-import java.util.HashMap;
+import src.model.actions.unary.BarkAction;
+
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SpeciesActionRegistry {
     private static final Map<String, Map<String, Action>> speciesActions = new HashMap<>();

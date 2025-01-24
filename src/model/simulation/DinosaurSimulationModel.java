@@ -1,13 +1,15 @@
 package src.model.simulation;
 
 import src.model.individual.Dinosaur;
+import src.model.individual.Individual;
 import src.model.stats.Stats;
-import observer.Subject;
-import observer.Observer;
+import src.observer.Observer;
+import src.observer.Subject;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class DinosaurSimulationModel implements Subject {
+public class DinosaurSimulationModel implements Subject, SimulationModel {
     private List<Dinosaur> dinosaurs = new ArrayList<>();
     private List<Observer> observers = new ArrayList<>();
 
@@ -28,16 +30,31 @@ public class DinosaurSimulationModel implements Subject {
         }
     }
 
-    // Add a new dinosaur to the simulation
-    public void addDinosaur(String name) {
+    @Override
+    public List<? extends Individual> getIndividuals() {
+        return dinosaurs;
+    }
+
+    @Override
+    public void addIndividual(String name) {
         Stats stats = new Stats(100, 50, 50); // Default stats
         Dinosaur dino = new Dinosaur("dn" + System.currentTimeMillis(), name, stats, false); // Default canFly
         dinosaurs.add(dino);
         notifyObservers(); // Notify observers after adding
     }
 
-    // Get all dinosaurs in the simulation
-    public List<Dinosaur> getDinosaurs() {
-        return dinosaurs;
+    @Override
+    public boolean supports(String species) {
+        return "Dinosaur".equals(species);
+    }
+
+    @Override
+    public Individual getIndividualById(String id) {
+        for (Individual individual : dinosaurs) {
+            if (individual.getId().equals(id)) {
+                return individual;
+            }
+        }
+        return null;
     }
 }
