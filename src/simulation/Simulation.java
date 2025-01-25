@@ -1,50 +1,39 @@
 package src.simulation;
 
-import src.controller.ActionController;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import src.controller.IndividualController;
-import src.model.simulation.ActionModel;
 import src.model.simulation.DinosaurSimulationModel;
 import src.model.simulation.DogSimulationModel;
+import src.model.simulation.IndividualSimulationModel;
 import src.model.simulation.SimulationModel;
-import src.view.ActionView;
-import src.view.IndividualView;
-
-import java.util.ArrayList;
-import java.util.List;
+import src.view.ConsoleSimulationView;
 
 public class Simulation {
     public static void main(String[] args) {
         // Create the view and controller
 
-        List<SimulationModel> models = new ArrayList<>();
+        ArrayList<SimulationModel> models= new ArrayList<>();
         models.add(new DinosaurSimulationModel());
         models.add(new DogSimulationModel());
         IndividualController individualController = new IndividualController(models);
-        IndividualView individualView = new IndividualView(individualController, models);
-        individualController.setView(individualView);
+        ConsoleSimulationView consoleSimulationView = new ConsoleSimulationView(individualController, models);
+        individualController.setView(consoleSimulationView);
 
         System.out.println("+-------------------------------------------------------+");
         System.out.println("|              WELCOME TO THE SIMULATION                |");
         System.out.println("+-------------------------------------------------------+");
+        System.out.println("ajouter individu ou faire une action");
+        System.out.println("Exemple d'ajout d'individu: ajouter espece nom");
+        System.out.println("Exemple d'action unaire: action nom action");
+        System.out.println("Exemple d'action binaire: action nom action nom2");
 
-        // Add some individuals
-        individualController.manageInsertIndividual();
-        individualController.manageInsertIndividual();
+        while (true){
+            consoleSimulationView.getInput();
+        }
 
-        // Get the IDs of the added individuals
-//        String dogId = models.get(1).getIndividuals().get(0).getId(); // Get the ID of the first dog
-//        String dinoId = models.get(0).getIndividuals().get(1).getId(); // Get the ID of the first dinosaur
-
-        System.out.println(models.get(1).getIndividuals());
-        System.out.println(models.get(0).getIndividuals());
-
-        ActionModel actionModel = new ActionModel();
-        ActionController actionController = new ActionController(actionModel);
-        ActionView actionView = new ActionView(actionController, actionModel);
-        actionController.setView(actionView);
-
-        // Perform some actions
-        actionController.manageExecuteAction(); // Rex barks (unary action)
-        actionController.manageExecuteAction(); // Rex bites T-Rex (binary action)
     }
 }

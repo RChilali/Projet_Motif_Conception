@@ -7,7 +7,7 @@ public abstract class Individual {
     private final String id;
     private final String name;
     private final String species;
-    private final Stats stats;
+    private Stats stats;
 
     public Individual(String id, String name, String species, Stats stats) {
         this.id = id;
@@ -24,4 +24,5 @@ public abstract class Individual {
 
     // Perform an action (to be overridden by subclasses)
     public abstract void performAction(String actionName, Individual target);
+    public abstract void performAction(String actionName);
 }

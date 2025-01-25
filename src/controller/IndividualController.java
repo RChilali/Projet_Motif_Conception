@@ -1,38 +1,77 @@
 package src.controller;
 
+
+import java.util.ArrayList;
+import src.model.individual.Individual;
 import src.model.simulation.SimulationModel;
-import src.model.simulation.UnknownSimulationModel;
-import src.model.simulation.registry.SimulationModelRegistry;
-import src.view.IndividualView;
+import src.view.ConsoleSimulationView;
 
-import java.util.List;
+public class IndividualController implements SimulationController<ConsoleSimulationView> {
 
-public class IndividualController implements SimulationController<IndividualView> {
+    private static final String ADD_COMMAND = "ajouter";
 
-    private IndividualView view;
+    private static final String ACTION_COMMAND = "action";
 
-    private List<SimulationModel> models;
+    private ConsoleSimulationView view;
 
-    public IndividualController(List<SimulationModel> models) {
+    private ArrayList<SimulationModel> models;
+
+    public IndividualController(ArrayList<SimulationModel> models) {
         this.models = models;
     }
 
-    @Override
-    public void setView(IndividualView view) {
+    public void setView(ConsoleSimulationView view) {
         this.view = view;
     }
 
-    public void manageInsertIndividual() {
-        String name = view.insertName();
-        String species = view.insertSpecies();
+    public void manageRequest(String request) {
 
-        SimulationModel simulationModel = SimulationModelRegistry.getInstance(models, species);
-
-        if (simulationModel instanceof UnknownSimulationModel) {
-            view.displayErrorMessage("No such species : " + species);
+        if (request == null || request.isEmpty() || models.isEmpty()) {
             return;
         }
 
-        simulationModel.addIndividual(name);
+        String[] requestArray = request.split(" ");
+
+        SimulationModel simulationModel = models.stream()
+            .filter(model -> model.supports(requestArray[1])).findFirst().orElseThrow();
+
+        String requestCommand = requestArray[0];
+
+        if (ADD_COMMAND.equals(requestCommand)) {
+            simulationModel.addIndividual(requestArray[2]);
+            return;
+        }
+
+        if (ACTION_COMMAND.equals(requestCommand)) {
+            performAction(requestArray);
+            return;
+        }
+
+        view.sendOutput("saisie incorrect\n");
     }
+
+    private void performAction(String[] requestArray) {
+
+        models.forEach(model -> {
+            Individual individual = model.getIndividualById(requestArray[1]);
+
+            if (individual == null) {
+                return;
+            }
+
+            if (requestArray.length == 3) {
+                models.performAction(requestArray[2]);
+                return;
+            }
+
+            if (requestArray.length == 4) {
+                Individual secondIndividual = model.getIndividualById(requestArray[3]);
+                individual.performAction(requestArray[2], secondIndividual);
+                return;
+            }
+
+            view.sendOutput("action incorrect\n");
+        });
+    }
+
 }

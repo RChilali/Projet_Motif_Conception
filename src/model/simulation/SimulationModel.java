@@ -8,9 +8,11 @@ public interface SimulationModel {
 
     void addIndividual(String name);
 
-    List<? extends Individual> getIndividuals();
+    List<Individual> getIndividuals();
 
     Individual getIndividualById(String id);
+
+    void updateIndividual(String id, Individual individual);
 
     // Méthode abstraite pour vérifier si l'implémentation correspond à l'entrée
     boolean supports(String species);

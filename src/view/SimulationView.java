@@ -2,10 +2,9 @@ package src.view;
 
 public interface SimulationView {
 
-    void displayErrorMessage(String message);
 
-    String insertName();
+    void sendOutput(String output);
 
-    String insertSpecies();
+    void getInput();
 
 }

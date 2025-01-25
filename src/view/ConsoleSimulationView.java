@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class IndividualView implements SimulationView, Observer {
+public class ConsoleSimulationView implements SimulationView, Observer {
 
     private Scanner scanner = new Scanner(System.in);
 
@@ -18,7 +18,7 @@ public class IndividualView implements SimulationView, Observer {
 
     private List<SimulationModel> models;
 
-    public IndividualView(IndividualController controller, List<SimulationModel> models) {
+    public ConsoleSimulationView(IndividualController controller, List<SimulationModel> models) {
         this.controller = controller;
         this.models = models;
 
@@ -52,29 +52,19 @@ public class IndividualView implements SimulationView, Observer {
         System.out.println("+-------------------------------------------------------+");
     }
 
-    @Override
-    public void displayErrorMessage(String message) {
-        System.out.println("! ERROR: " + message);
+
+    public void getInput() {
+        System.out.print("ajouter ou faire une action:\n");
+        controller.manageRequest(scanner.nextLine());
     }
 
-    public void insertIndividual() {
-        controller.manageInsertIndividual();
-    }
-
-    @Override
-    public String insertName() {
-        System.out.print("Enter name: ");
-        return scanner.nextLine();
-    }
-
-    @Override
-    public String insertSpecies() {
-        System.out.print("Enter species (Dog/Dinosaur): ");
-        return scanner.nextLine();
+    public void sendOutput(String output) {
+        System.out.print(output);
     }
 
     @Override
     public void update() {
-        System.out.println("Individual added");
+        displayIndividuals();
+//        System.out.println("Individual added");
     }
 }

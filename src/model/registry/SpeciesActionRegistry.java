@@ -1,4 +1,4 @@
-package src.model.actions.registry;
+package src.model.registry;
 
 import src.model.actions.Action;
 import src.model.actions.binary.BiteAction;
