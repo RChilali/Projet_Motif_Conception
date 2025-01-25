@@ -1,6 +1,9 @@
 package src.model.individual;
 
+import src.model.actions.Action;
+import src.model.registry.SpeciesActionRegistry;
 import src.model.stats.Stats;
+
 import java.util.Map;
 
 public abstract class Individual {
@@ -17,12 +20,44 @@ public abstract class Individual {
     }
 
     // Getters
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getSpecies() { return species; }
-    public Stats getStats() { return stats; }
+    public String getId() {
+        return id;
+    }
 
-    // Perform an action (to be overridden by subclasses)
-    public abstract void performAction(String actionName, Individual target);
-    public abstract void performAction(String actionName);
+    public String getName() {
+        return name;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public Stats getStats() {
+        return stats;
+    }
+
+    public boolean performAction(String actionName, Individual target) {
+        Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(species);
+        Action action = actions.get(actionName);
+
+        if (action != null && action.validate(this, target)) {
+            action.execute(this, target);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean performAction(String actionName) {
+        Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(species);
+        Action action = actions.get(actionName);
+
+        if (action != null && action.validate(this, null)) {
+            action.execute(this, null);
+            return true;
+        }
+
+        return false;
+    }
+
 }

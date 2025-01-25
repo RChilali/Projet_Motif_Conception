@@ -1,23 +1,21 @@
 package src.controller;
 
 
-import java.util.ArrayList;
-import src.model.individual.Individual;
 import src.model.simulation.SimulationModel;
 import src.view.ConsoleSimulationView;
 
 public class IndividualController implements SimulationController<ConsoleSimulationView> {
 
-    private static final String ADD_COMMAND = "ajouter";
+    public static final String ADD_COMMAND = "ajouter";
 
-    private static final String ACTION_COMMAND = "action";
+    public static final String ACTION_COMMAND = "action";
 
     private ConsoleSimulationView view;
 
-    private ArrayList<SimulationModel> models;
+    private final SimulationModel model;
 
-    public IndividualController(ArrayList<SimulationModel> models) {
-        this.models = models;
+    public IndividualController(SimulationModel model) {
+        this.model = model;
     }
 
     public void setView(ConsoleSimulationView view) {
@@ -26,19 +24,20 @@ public class IndividualController implements SimulationController<ConsoleSimulat
 
     public void manageRequest(String request) {
 
-        if (request == null || request.isEmpty() || models.isEmpty()) {
+        if (request == null || model == null) {
             return;
         }
 
         String[] requestArray = request.split(" ");
 
-        SimulationModel simulationModel = models.stream()
-            .filter(model -> model.supports(requestArray[1])).findFirst().orElseThrow();
-
         String requestCommand = requestArray[0];
 
         if (ADD_COMMAND.equals(requestCommand)) {
-            simulationModel.addIndividual(requestArray[2]);
+            try {
+                model.addIndividual(requestArray[1], requestArray[2]);
+            } catch (ReflectiveOperationException e) {
+                view.sendErrorOutput("Saisie incorrect. No such species : " + requestArray[1] + "\n");
+            }
             return;
         }
 
@@ -47,31 +46,26 @@ public class IndividualController implements SimulationController<ConsoleSimulat
             return;
         }
 
-        view.sendOutput("saisie incorrect\n");
+        view.sendErrorOutput("Saisie incorrecte\n");
     }
 
     private void performAction(String[] requestArray) {
 
-        models.forEach(model -> {
-            Individual individual = model.getIndividualById(requestArray[1]);
+        boolean isActionSuccessful;
 
-            if (individual == null) {
-                return;
-            }
+        if (requestArray.length == 3) {
+            isActionSuccessful = model.simulateAction(requestArray[1], requestArray[2]);
+        } else if (requestArray.length == 4) {
+            isActionSuccessful = model.simulateAction(requestArray[1], requestArray[2], requestArray[3]);
+        } else {
+            view.sendErrorOutput("Action incorrecte\n");
+            return;
+        }
 
-            if (requestArray.length == 3) {
-                models.performAction(requestArray[2]);
-                return;
-            }
+        if (!isActionSuccessful) {
+            view.sendErrorOutput("Error occurred while executing action\n");
+        }
 
-            if (requestArray.length == 4) {
-                Individual secondIndividual = model.getIndividualById(requestArray[3]);
-                individual.performAction(requestArray[2], secondIndividual);
-                return;
-            }
-
-            view.sendOutput("action incorrect\n");
-        });
     }
 
 }

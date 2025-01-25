@@ -1,39 +1,30 @@
 package src.simulation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import src.controller.IndividualController;
-import src.model.simulation.DinosaurSimulationModel;
-import src.model.simulation.DogSimulationModel;
 import src.model.simulation.IndividualSimulationModel;
-import src.model.simulation.SimulationModel;
 import src.view.ConsoleSimulationView;
+
+import static src.controller.IndividualController.ACTION_COMMAND;
+import static src.controller.IndividualController.ADD_COMMAND;
+import static src.view.ConsoleSimulationView.EXIT_COMMAND;
 
 public class Simulation {
     public static void main(String[] args) {
         // Create the view and controller
 
-        ArrayList<SimulationModel> models= new ArrayList<>();
-        models.add(new DinosaurSimulationModel());
-        models.add(new DogSimulationModel());
-        IndividualController individualController = new IndividualController(models);
-        ConsoleSimulationView consoleSimulationView = new ConsoleSimulationView(individualController, models);
+        IndividualSimulationModel model = new IndividualSimulationModel();
+        IndividualController individualController = new IndividualController(model);
+        ConsoleSimulationView consoleSimulationView = new ConsoleSimulationView(individualController, model);
         individualController.setView(consoleSimulationView);
 
         System.out.println("+-------------------------------------------------------+");
         System.out.println("|              WELCOME TO THE SIMULATION                |");
         System.out.println("+-------------------------------------------------------+");
-        System.out.println("ajouter individu ou faire une action");
-        System.out.println("Exemple d'ajout d'individu: ajouter espece nom");
-        System.out.println("Exemple d'action unaire: action nom action");
-        System.out.println("Exemple d'action binaire: action nom action nom2");
+        System.out.println("Exemple d'ajout d'individu:\t" + ADD_COMMAND + " espèce nom");
+        System.out.println("Exemple d'action unaire:\t" + ACTION_COMMAND + " nom actionNom");
+        System.out.println("Exemple d'action binaire:\t" + ACTION_COMMAND + " nom actionNom nom2");
+        System.out.println("Pour quitter la simulation:\t" + EXIT_COMMAND + "\n");
 
-        while (true){
-            consoleSimulationView.getInput();
-        }
-
+        consoleSimulationView.activateView();
     }
 }

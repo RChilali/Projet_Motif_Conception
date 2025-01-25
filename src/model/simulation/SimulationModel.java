@@ -6,14 +6,15 @@ import java.util.List;
 
 public interface SimulationModel {
 
-    void addIndividual(String name);
+    void addIndividual(String species, String name) throws ReflectiveOperationException;
+
+    boolean simulateAction(String firstIndividualName, String action);
+
+    boolean simulateAction(String firstIndividualName, String action, String secondIndividualName);
 
     List<Individual> getIndividuals();
 
-    Individual getIndividualById(String id);
+    Individual getIndividualByName(String name);
 
     void updateIndividual(String id, Individual individual);
-
-    // Méthode abstraite pour vérifier si l'implémentation correspond à l'entrée
-    boolean supports(String species);
 }

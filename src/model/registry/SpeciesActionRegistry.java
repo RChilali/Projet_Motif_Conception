@@ -4,8 +4,9 @@ import src.model.actions.Action;
 import src.model.actions.binary.BiteAction;
 import src.model.actions.binary.StompAction;
 import src.model.actions.unary.BarkAction;
+import src.model.individual.Dinosaur;
+import src.model.individual.Dog;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,15 +15,10 @@ public class SpeciesActionRegistry {
 
     static {
         // Define default Dog actions
-        Map<String, Action> dogActions = new HashMap<>();
-        dogActions.put("Bark", new BarkAction());
-        dogActions.put("Bite", new BiteAction());
-        speciesActions.put("Dog", Collections.unmodifiableMap(dogActions));
+        speciesActions.put(Dog.class.getSimpleName(), Map.of("Bark", new BarkAction(), "Bite", new BiteAction()));
 
         // Define default Dinosaur actions
-        Map<String, Action> dinoActions = new HashMap<>();
-        dinoActions.put("Stomp", new StompAction());
-        speciesActions.put("Dinosaur", Collections.unmodifiableMap(dinoActions));
+        speciesActions.put(Dinosaur.class.getSimpleName(), Map.of("Stomp", new StompAction()));
     }
 
     // Get all actions for a species

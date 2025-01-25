@@ -1,44 +1,88 @@
 package src.model.simulation;
 
-import java.util.ArrayList;
-import java.util.List;
+import src.model.individual.Dinosaur;
 import src.model.individual.Dog;
-import src.model.individual.Dog.Gender;
 import src.model.individual.Individual;
 import src.model.stats.Stats;
 import src.observer.Observer;
 import src.observer.Subject;
 
-public abstract class IndividualSimulationModel implements Subject, SimulationModel  {
-  private List<Individual> individuals = new ArrayList<>();
-  private List<Observer> observers = new ArrayList<>();
+import java.util.ArrayList;
+import java.util.List;
 
-  public List<Individual> getIndividuals() {
-    return individuals;
-  }
+public class IndividualSimulationModel implements Subject, SimulationModel {
+    private List<Individual> individuals = new ArrayList<>();
+    private List<Observer> observers = new ArrayList<>();
 
-  public void addIndividual(String name) {}
+    private List<Class<? extends Individual>> availableClasses = List.of(Dog.class, Dinosaur.class);
 
-  public Individual getIndividualById(String id) {
-    for (Individual individual : individuals) {
-      if (individual.getId().equals(id)) {
-        return individual;
-      }
+    public List<Individual> getIndividuals() {
+        return individuals;
     }
-    return null;
-  }
 
-  public void addObserver(Observer observer) {
-    observers.add(observer);
-  }
+    public void addIndividual(String species, String name) throws ReflectiveOperationException {
 
-  public void removeObserver(Observer observer) {
-    observers.remove(observer);
-  }
-
-  public void notifyObservers() {
-    for (Observer observer : observers) {
-      observer.update();
+        for (Class<? extends Individual> subClass : availableClasses) {
+            String className = subClass.getSimpleName();
+            if (className.equals(species)) {
+                Stats stats = new Stats(100, 50, 50);
+                Individual individual = subClass
+                        .getDeclaredConstructor(String.class, String.class, String.class, Stats.class)
+                        .newInstance(name, name, species, stats);
+                getIndividuals().add(individual);
+                notifyObservers();
+            }
+        }
     }
-  }
+
+    @Override
+    public boolean simulateAction(String firstIndividualName, String action) {
+        Individual firstIndividual = getIndividualByName(firstIndividualName);
+
+        if (firstIndividual == null) {
+            return false;
+        }
+
+        return firstIndividual.performAction(action);
+    }
+
+    @Override
+    public boolean simulateAction(String firstIndividualName, String action, String secondIndividualName) {
+        Individual firstIndividual = getIndividualByName(firstIndividualName);
+        Individual secondIndividual = getIndividualByName(secondIndividualName);
+
+        if (firstIndividual == null || secondIndividual == null) {
+            return false;
+        }
+
+        return firstIndividual.performAction(action, secondIndividual);
+    }
+
+    public Individual getIndividualByName(String name) {
+        for (Individual individual : individuals) {
+            if (individual.getId().equals(name)) {
+                return individual;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void updateIndividual(String id, Individual individual) {
+
+    }
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
+    }
 }

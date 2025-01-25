@@ -6,7 +6,6 @@ import src.model.simulation.SimulationModel;
 import src.observer.Observer;
 import src.observer.Subject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,16 +15,16 @@ public class ConsoleSimulationView implements SimulationView, Observer {
 
     private IndividualController controller;
 
-    private List<SimulationModel> models;
+    private SimulationModel model;
 
-    public ConsoleSimulationView(IndividualController controller, List<SimulationModel> models) {
+    public static final String EXIT_COMMAND = "exit";
+
+    public ConsoleSimulationView(IndividualController controller, SimulationModel model) {
         this.controller = controller;
-        this.models = models;
+        this.model = model;
 
-        for (SimulationModel model : models) {
-            if (model instanceof Subject) {
-                ((Subject) model).addObserver(this);
-            }
+        if (model instanceof Subject) {
+            ((Subject) model).addObserver(this);
         }
     }
 
@@ -34,11 +33,7 @@ public class ConsoleSimulationView implements SimulationView, Observer {
         System.out.println("| ID            | Name     | Species   | Vitality | Food | Water |");
         System.out.println("+-------------------------------------------------------+");
 
-        List<Individual> individuals = new ArrayList<>();
-        for (SimulationModel model : models) {
-            List<? extends Individual> modelIndividuals = model.getIndividuals();
-            individuals.addAll(modelIndividuals);
-        }
+        List<Individual> individuals = model.getIndividuals();
 
         for (Individual individual : individuals) {
             System.out.println(String.format("| %-13s | %-8s | %-9s | %8.1f | %4.1f | %5.1f |",
@@ -53,18 +48,33 @@ public class ConsoleSimulationView implements SimulationView, Observer {
     }
 
 
-    public void getInput() {
+    public String getInput() {
         System.out.print("ajouter ou faire une action:\n");
-        controller.manageRequest(scanner.nextLine());
+        return scanner.nextLine();
+    }
+
+    @Override
+    public void activateView() {
+
+        String request = getInput();
+
+        while (!EXIT_COMMAND.equals(request)) {
+            controller.manageRequest(request);
+            request = getInput();
+        }
     }
 
     public void sendOutput(String output) {
-        System.out.print(output);
+        System.out.println(output);
+    }
+
+    public void sendErrorOutput(String output) {
+        sendOutput("[ERROR] : " + output);
     }
 
     @Override
     public void update() {
-        displayIndividuals();
-//        System.out.println("Individual added");
+//        displayIndividuals();
+        sendOutput("output");
     }
 }
