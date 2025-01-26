@@ -36,6 +36,10 @@ public abstract class Individual {
         return stats;
     }
 
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
+
     public boolean performAction(String actionName, Individual target) {
         Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(species);
         Action action = actions.get(actionName);

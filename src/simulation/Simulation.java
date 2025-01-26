@@ -23,6 +23,8 @@ public class Simulation {
         System.out.println("Exemple d'ajout d'individu:\t" + ADD_COMMAND + " espèce nom");
         System.out.println("Exemple d'action unaire:\t" + ACTION_COMMAND + " nom actionNom");
         System.out.println("Exemple d'action binaire:\t" + ACTION_COMMAND + " nom actionNom nom2");
+        System.out.println("Exemple d'affichage d'informations:\t" + "info nom ou info");
+        System.out.println("Exemple de mise à jour d'informations:\t" + "update nom vie nourriture eau");
         System.out.println("Pour quitter la simulation:\t" + EXIT_COMMAND + "\n");
 
         consoleSimulationView.activateView();

@@ -10,6 +10,12 @@ public class IndividualController implements SimulationController<ConsoleSimulat
 
     public static final String ACTION_COMMAND = "action";
 
+    public static final String INFO_COMMAND = "info";
+
+    public static final String DELETE_COMMAND = "delete";
+
+    public static final String UPDATE_COMMAND = "update";
+
     private ConsoleSimulationView view;
 
     private final SimulationModel model;
@@ -32,11 +38,13 @@ public class IndividualController implements SimulationController<ConsoleSimulat
 
         String requestCommand = requestArray[0];
 
+
         if (ADD_COMMAND.equals(requestCommand)) {
             try {
                 model.addIndividual(requestArray[1], requestArray[2]);
             } catch (ReflectiveOperationException e) {
-                view.sendErrorOutput("Saisie incorrect. No such species : " + requestArray[1] + "\n");
+                view.sendErrorOutput(
+                    "Saisie incorrect. No such species : " + requestArray[1] + "\n");
             }
             return;
         }
@@ -46,26 +54,40 @@ public class IndividualController implements SimulationController<ConsoleSimulat
             return;
         }
 
+        if(INFO_COMMAND.equals(requestCommand)) {
+            if (requestArray.length == 2) {
+                view.displayIndividualById(requestArray[1]);
+                return;
+            }
+            view.displayIndividuals();
+            return;
+        }
+
+        if(DELETE_COMMAND.equals(requestCommand)) {
+            if (requestArray.length== 2 ) {
+                model.deleteIndividual(requestArray[1]);
+                return;
+            }
+        }
+
+        if(UPDATE_COMMAND.equals(requestCommand)) {
+            if (requestArray.length== 5 ) {
+                model.updateIndividual(requestArray[1], requestArray[2], requestArray[3], requestArray[4]);
+                return;
+            }
+        }
+
         view.sendErrorOutput("Saisie incorrecte\n");
     }
 
     private void performAction(String[] requestArray) {
-
-        boolean isActionSuccessful;
-
         if (requestArray.length == 3) {
-            isActionSuccessful = model.simulateAction(requestArray[1], requestArray[2]);
+            model.simulateAction(requestArray[1], requestArray[2]);
         } else if (requestArray.length == 4) {
-            isActionSuccessful = model.simulateAction(requestArray[1], requestArray[2], requestArray[3]);
+            model.simulateAction(requestArray[1], requestArray[2], requestArray[3]);
         } else {
             view.sendErrorOutput("Action incorrecte\n");
-            return;
         }
-
-        if (!isActionSuccessful) {
-            view.sendErrorOutput("Error occurred while executing action\n");
-        }
-
     }
 
 }

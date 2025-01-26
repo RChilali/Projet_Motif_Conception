@@ -47,9 +47,28 @@ public class ConsoleSimulationView implements SimulationView, Observer {
         System.out.println("+-------------------------------------------------------+");
     }
 
+    public void displayIndividualById(String id) {
+        Individual individual = model.getIndividualByName(id);
+        if (individual == null) {
+            sendErrorOutput("Individual with ID " + id + " not found");
+            return;
+        }
+        System.out.println("+--------------------- INDIVIDUAL ----------------------+");
+        System.out.println("| ID            | Name     | Species   | Vitality | Food | Water |");
+        System.out.println("+-------------------------------------------------------+");
+        System.out.println(String.format("| %-13s | %-8s | %-9s | %8.1f | %4.1f | %5.1f |",
+                individual.getId(),
+                individual.getName(),
+                individual.getSpecies(),
+                individual.getStats().getVitality(),
+                individual.getStats().getFood(),
+                individual.getStats().getWater()));
+        System.out.println("+-------------------------------------------------------+");
+    }
+
 
     public String getInput() {
-        System.out.print("ajouter ou faire une action:\n");
+        System.out.print("ajouter,faire une action ou afficher info:\n");
         return scanner.nextLine();
     }
 
@@ -74,7 +93,6 @@ public class ConsoleSimulationView implements SimulationView, Observer {
 
     @Override
     public void update() {
-//        displayIndividuals();
-        sendOutput("output");
+        sendOutput(model.getOutputToDisplay());
     }
 }

@@ -3,18 +3,25 @@ package src.model.simulation;
 import src.model.individual.Individual;
 
 import java.util.List;
+import src.model.stats.Stats;
 
 public interface SimulationModel {
 
     void addIndividual(String species, String name) throws ReflectiveOperationException;
 
-    boolean simulateAction(String firstIndividualName, String action);
+    void simulateAction(String firstIndividualName, String action);
 
-    boolean simulateAction(String firstIndividualName, String action, String secondIndividualName);
+    void simulateAction(String firstIndividualName, String action, String secondIndividualName);
 
     List<Individual> getIndividuals();
 
     Individual getIndividualByName(String name);
 
-    void updateIndividual(String id, Individual individual);
+    void updateIndividual(String id, String life, String food, String water);
+
+    void deleteIndividual(String id);
+
+    void setOutputToDisplay(String OutputToDisplay);
+
+    String getOutputToDisplay();
 }
