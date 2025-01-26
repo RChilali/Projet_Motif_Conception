@@ -23,20 +23,30 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
     }
 
     public void addIndividual(String species, String name) throws ReflectiveOperationException {
-
-        for (Class<? extends Individual> subClass : availableClasses) {
-            String className = subClass.getSimpleName();
-            if (className.equals(species)) {
+        Class<? extends Individual> subClass = availableClasses.stream()
+            .filter(cls -> cls.getSimpleName().equals(species))
+            .findFirst()
+            .orElse(null);
+        if (subClass == null) {
+         setOutputToDisplay("No such species : " + species + "\n" + "Available species : " +
+                    availableClasses.stream()
+                        .map(Class::getSimpleName)
+                        .reduce((a, b) -> a + " " + b)
+                        .orElse(""));
+            notifyObservers();
+        } else if (subClass.getSimpleName().equals(species)) {
+            if (verifyNameAvailability(name)) {
                 Stats stats = new Stats(100, 50, 50);
                 Individual individual = subClass.getDeclaredConstructor(String.class, String.class,
                     String.class, Stats.class).newInstance(name, name, species, stats);
                 getIndividuals().add(individual);
-                setOutputToDisplay("Individual " + name + " added successfully\n"
-                + name + " : " + individual.getStats());
+                setOutputToDisplay("Individual " + name + " added successfully\n" + name + " : "
+                    + individual.getStats());
                 notifyObservers();
             }
         }
     }
+
 
     @Override
     public void simulateAction(String firstIndividualName, String action) {
@@ -77,8 +87,10 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
         }
         setOutputToDisplay(
             "Action successful between " + firstIndividualName + " and " + secondIndividualName
-                + "\n" + firstIndividualName + " : " + firstIndividual.getStats() + "\n"
-                + secondIndividualName + " : " + secondIndividual.getStats());
+                + "\n"
+                + firstIndividualName + " : " + firstIndividual.getStats() + "\n"
+                + secondIndividualName
+                + " : " + secondIndividual.getStats());
         notifyObservers();
     }
 
@@ -100,13 +112,14 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
     }
 
     @Override
-    public void updateIndividual(String id,String life, String food, String water) {
+    public void updateIndividual(String id, String life, String food, String water) {
         for (Individual individual : individuals) {
             if (individual.getId().equals(id)) {
-                individual.setStats(new Stats(Float.parseFloat(life), Float.parseFloat(food),
-                    Float.parseFloat(water)));
-                setOutputToDisplay("Individual " + id + " updated successfully\n"
-                + id + " : " + individual.getStats());
+                individual.setStats(
+                    new Stats(Float.parseFloat(life), Float.parseFloat(food),
+                        Float.parseFloat(water)));
+                setOutputToDisplay("Individual " + id + " updated successfully\n" + id + " : "
+                    + individual.getStats());
                 notifyObservers();
                 return;
             }
@@ -129,6 +142,19 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
         setOutputToDisplay("Individual " + id + " not found\n");
         notifyObservers();
     }
+
+    @Override
+    public boolean verifyNameAvailability(String name) {
+        for (Individual individual : individuals) {
+            if (individual.getId().equals(name)) {
+                setOutputToDisplay("Name " + name + " already taken\n");
+                notifyObservers();
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public void addObserver(Observer observer) {
         observers.add(observer);

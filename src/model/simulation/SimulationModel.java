@@ -3,7 +3,6 @@ package src.model.simulation;
 import src.model.individual.Individual;
 
 import java.util.List;
-import src.model.stats.Stats;
 
 public interface SimulationModel {
 
@@ -24,4 +23,6 @@ public interface SimulationModel {
     void setOutputToDisplay(String OutputToDisplay);
 
     String getOutputToDisplay();
+
+    boolean verifyNameAvailability(String name);
 }
