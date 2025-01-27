@@ -1,6 +1,7 @@
 package src.view;
 
 import src.controller.IndividualController;
+import src.controller.SimulationController;
 import src.model.individual.Individual;
 import src.model.simulation.SimulationModel;
 import src.observer.Observer;
@@ -19,8 +20,8 @@ public class ConsoleSimulationView implements SimulationView, Observer {
 
     public static final String EXIT_COMMAND = "exit";
 
-    public ConsoleSimulationView(IndividualController controller, SimulationModel model) {
-        this.controller = controller;
+    public ConsoleSimulationView(SimulationController controller, SimulationModel model) {
+        this.controller = (IndividualController) controller;
         this.model = model;
 
         if (model instanceof Subject) {
@@ -67,7 +68,7 @@ public class ConsoleSimulationView implements SimulationView, Observer {
     }
 
 
-    public String getInput() {
+    private String getInput() {
         System.out.print("ajouter,faire une action ou afficher info:\n");
         return scanner.nextLine();
     }

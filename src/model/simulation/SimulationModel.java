@@ -4,11 +4,14 @@ import src.model.individual.Individual;
 
 import java.util.List;
 
+/**
+ * Modèle qui est responsable de la gestion des données et de la logique métier
+ */
 public interface SimulationModel {
 
     void addIndividual(String species, String name) throws ReflectiveOperationException;
 
-    void simulateAction(String firstIndividualName, String action);
+    void simulateAction(String firstIndividualName, String actionName);
 
     void simulateAction(String firstIndividualName, String action, String secondIndividualName);
 
@@ -23,6 +26,4 @@ public interface SimulationModel {
     void setOutputToDisplay(String OutputToDisplay);
 
     String getOutputToDisplay();
-
-    boolean verifyNameAvailability(String name);
 }

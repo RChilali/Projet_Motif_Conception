@@ -4,30 +4,82 @@ import src.model.actions.Action;
 import src.model.actions.binary.BiteAction;
 import src.model.actions.binary.StompAction;
 import src.model.actions.unary.BarkAction;
+import src.model.actions.unary.RestAction;
 import src.model.individual.Dinosaur;
 import src.model.individual.Dog;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
+/**
+ * TODO
+ */
 public class SpeciesActionRegistry {
     private static final Map<String, Map<String, Action>> speciesActions = new HashMap<>();
 
     static {
-        // Define default Dog actions
-        speciesActions.put(Dog.class.getSimpleName(), Map.of("Bark", new BarkAction(), "Bite", new BiteAction()));
+        speciesActions.put(Dog.class.getSimpleName(),
+                Map.of("aboyer", new BarkAction(5),
+                        "mordre", new BiteAction(10, 5),
+                        "dormir", new RestAction(20))
+        );
 
-        // Define default Dinosaur actions
-        speciesActions.put(Dinosaur.class.getSimpleName(), Map.of("Stomp", new StompAction()));
+        speciesActions.put(Dinosaur.class.getSimpleName(),
+                Map.of("écraser", new StompAction(15, 1),
+                        "dormir", new RestAction(20)));
     }
 
-    // Get all actions for a species
+    /**
+     * Renvoie toutes les actions d'une espèce.
+     */
     public static Map<String, Action> getActionsForSpecies(String species) {
         return speciesActions.getOrDefault(species, Map.of());
     }
 
-    // Add new actions globally for a species
-    public static void addAction(String species, String actionName, Action action) {
-        speciesActions.computeIfAbsent(species, k -> new HashMap<>()).put(actionName, action);
+    /**
+     * Renvoie la chaine de caractères contenant toutes les actions par espèce.
+     */
+    public static String getSpeciesActions() {
+
+        if (speciesActions.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        Set<String> speciesNames = speciesActions.keySet();
+        for (String speciesName : speciesNames) {
+            Map<String, Action> actionsMap = speciesActions.get(speciesName);
+            sb.append(speciesName).append(" : | ");
+            Set<String> actionNames = actionsMap.keySet();
+            for (String actionName : actionNames) {
+                sb.append(actionName).append(" | ");
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Renvoie la chaine de caractères contenant toutes les actions d'une espèce.
+     */
+    public static String getSpeciesActions(String species) {
+
+        if (speciesActions.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(species).append(" : | ");
+        Map<String, Action> actionsForSpecies = getActionsForSpecies(species);
+        Set<String> actionNames = actionsForSpecies.keySet();
+        for (String actionName : actionNames) {
+            sb.append(actionName).append(" | ");
+        }
+        sb.append("\n");
+
+        return sb.toString();
     }
 }

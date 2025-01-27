@@ -1,17 +1,26 @@
 package src.model.individual;
 
 import src.model.actions.Action;
-import src.model.registry.SpeciesActionRegistry;
 import src.model.stats.Stats;
 
-import java.util.Map;
-
+/**
+ * Définition de l'individu.
+ */
 public abstract class Individual {
+
     private final String id;
     private final String name;
     private final String species;
     private Stats stats;
 
+    /**
+     * Constructor champ à champ.
+     *
+     * @param id      idéntifiant de l'individu
+     * @param name    nom de l'individu
+     * @param species espèce de l'individu
+     * @param stats   statistics de l'individu
+     */
     public Individual(String id, String name, String species, Stats stats) {
         this.id = id;
         this.name = name;
@@ -19,31 +28,49 @@ public abstract class Individual {
         this.stats = stats;
     }
 
-    // Getters
+    /**
+     * Renvoie l'idéntifiant de l'individu.
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Renvoie le nom de l'individu.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Renvoie l'espèce de l'individu.
+     */
     public String getSpecies() {
         return species;
     }
 
+    /**
+     * Renvoie les statistics de l'individu.
+     */
     public Stats getStats() {
         return stats;
     }
 
+    /**
+     * Setter : définie les statistics de l'individu.
+     */
     public void setStats(Stats stats) {
         this.stats = stats;
     }
 
-    public boolean performAction(String actionName, Individual target) {
-        Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(species);
-        Action action = actions.get(actionName);
-
+    /**
+     * Lance l'exécution de l'action binaire de l'individu si cette action est valide.
+     *
+     * @param action l'action de l'individu
+     * @param target la cible de l'action
+     * @return true si l'action a été executé, false sinon
+     */
+    public boolean performAction(Action action, Individual target) {
         if (action != null && action.validate(this, target)) {
             action.execute(this, target);
             return true;
@@ -52,10 +79,13 @@ public abstract class Individual {
         return false;
     }
 
-    public boolean performAction(String actionName) {
-        Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(species);
-        Action action = actions.get(actionName);
-
+    /**
+     * Lance l'exécution de l'action unaire de l'individu si cette action est valide.
+     *
+     * @param action l'action de l'individu
+     * @return true si l'action a été executé, false sinon
+     */
+    public boolean performAction(Action action) {
         if (action != null && action.validate(this, null)) {
             action.execute(this, null);
             return true;
