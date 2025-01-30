@@ -30,7 +30,7 @@ public abstract class UnaryAction extends Action {
     }
 
     /**
-     * Modifie le message à afficher et diminue les statistics d'individu participant.
+     * Modifie le message à afficher et diminue les statistiques d'individu participant.
      *
      * @param source individu source de l'action
      */
@@ -47,7 +47,7 @@ public abstract class UnaryAction extends Action {
     public abstract void setActionMessage(Individual source);
 
     /**
-     * Renvoie les statistics que perd ou gagne la victime en effectuant l'action.
+     * Renvoie les statistiques que perd ou gagne la victime en effectuant l'action.
      */
     public Stats getCost() {
         return cost;

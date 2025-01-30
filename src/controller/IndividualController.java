@@ -95,7 +95,7 @@ public class IndividualController implements SimulationController {
     }
 
     /**
-     * Exécute une action d'un individu en fonction de nombre de paramètres. Nombre de paramètres possible :
+     * Exécute une action d'un individu en fonction du nombre de paramètres. Nombre de paramètres possible :
      * <li>3 (commande "action", nom d'un individu, action) : action unaire s'exécute</li>
      * <li>4 (commande "action", nom d'un individu, action, nom du deuxième individu) : action binaire s'exécute</li>
      * <li>Moins que 3 ou plus que 4 : message d'erreur est envoyé à la vue</li>

@@ -25,7 +25,7 @@ public abstract class BinaryAction extends Action {
     }
 
     /**
-     * Modifie le message qui décrit ce qui se passe entre les individus et diminue les statistics de ces
+     * Modifie le message qui décrit ce qui se passe entre les individus et diminue les statistiques des
      * deux individus participants.
      *
      * @param source individu source de l'action

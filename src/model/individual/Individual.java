@@ -14,12 +14,12 @@ public abstract class Individual {
     private Stats stats;
 
     /**
-     * Constructor champ à champ.
+     * Constructeur champ à champ.
      *
-     * @param id      idéntifiant de l'individu
+     * @param id      identifiant de l'individu
      * @param name    nom de l'individu
      * @param species espèce de l'individu
-     * @param stats   statistics de l'individu
+     * @param stats   statistiques de l'individu
      */
     public Individual(String id, String name, String species, Stats stats) {
         this.id = id;
@@ -29,7 +29,7 @@ public abstract class Individual {
     }
 
     /**
-     * Renvoie l'idéntifiant de l'individu.
+     * Renvoie l'identifiant de l'individu.
      */
     public String getId() {
         return id;
@@ -50,14 +50,14 @@ public abstract class Individual {
     }
 
     /**
-     * Renvoie les statistics de l'individu.
+     * Renvoie les statistiques de l'individu.
      */
     public Stats getStats() {
         return stats;
     }
 
     /**
-     * Setter : définie les statistics de l'individu.
+     * Setter : définie les statistiques de l'individu.
      */
     public void setStats(Stats stats) {
         this.stats = stats;

@@ -3,24 +3,24 @@ package src.model.individual;
 import src.model.stats.Stats;
 
 /**
- * Individu dinosaur.
+ * Individu dinosaure.
  */
 public class Dinosaur extends Individual {
 
     /**
-     * Constructor champ à champ.
+     * Constructeur champ à champ.
      *
-     * @param id      idéntifiant du dinosaur
-     * @param name    nom du dinosaur
-     * @param species espèce du dinosaur
-     * @param stats   statistics du dinosaur
+     * @param id      identifiant du dinosaure
+     * @param name    nom du dinosaure
+     * @param species espèce du dinosaure
+     * @param stats   statistiques du dinosaure
      */
     public Dinosaur(String id, String name, String species, Stats stats) {
         super(id, name, species, stats);
     }
 
     /**
-     * @return la chaîne de caractères formatée décrivant le dinosaur.
+     * @return la chaîne de caractères formatée décrivant le dinosaure.
      */
     @Override
     public String toString() {

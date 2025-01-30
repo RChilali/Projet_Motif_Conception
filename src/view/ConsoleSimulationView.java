@@ -62,7 +62,7 @@ public class ConsoleSimulationView implements SimulationView, Observer {
     /**
      * Affiche un individu et ses caractéristiques.
      *
-     * @param id idéntifiant d'un individu
+     * @param id identifiant d'un individu
      */
     public void displayIndividualById(String id) {
         Individual individual = model.getIndividualByName(id);

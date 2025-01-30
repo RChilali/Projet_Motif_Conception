@@ -12,10 +12,10 @@ public class Dog extends Individual {
     /**
      * Constructor champ à champ définissant le genre par défault.
      *
-     * @param id      idéntifiant du chien
+     * @param id      identifiant du chien
      * @param name    nom du chien
      * @param species espèce du chien
-     * @param stats   statistics du chien
+     * @param stats   statistiques du chien
      */
     public Dog(String id, String name, String species, Stats stats) {
         this(id, name, species, stats, Gender.male);
@@ -24,10 +24,10 @@ public class Dog extends Individual {
     /**
      * Constructor champ à champ.
      *
-     * @param id      idéntifiant du chien
+     * @param id      identifiant du chien
      * @param name    nom du chien
      * @param species espèce du chien
-     * @param stats   statistics du chien
+     * @param stats   statistiques du chien
      * @param gender  genre du chien
      */
     public Dog(String id, String name, String species, Stats stats, Gender gender) {
