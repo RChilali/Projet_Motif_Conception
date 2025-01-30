@@ -7,6 +7,7 @@ import src.model.actions.unary.BarkAction;
 import src.model.actions.unary.RestAction;
 import src.model.individual.Dinosaur;
 import src.model.individual.Dog;
+import src.model.stats.Stats;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,14 +21,18 @@ public class SpeciesActionRegistry {
 
     static {
         speciesActions.put(Dog.class.getSimpleName(),
-                Map.of("aboyer", new BarkAction(5),
-                        "mordre", new BiteAction(10, 5),
-                        "dormir", new RestAction(20))
+                Map.of(BarkAction.getActionName(), new BarkAction(new Stats(-5, -2, -1)),
+                        RestAction.getActionName(), new RestAction(new Stats(20, 5, 5)),
+                        BiteAction.getActionName(), new BiteAction(new Stats(-10, -2, -2),
+                                new Stats(0, -2, -2))
+                )
         );
 
         speciesActions.put(Dinosaur.class.getSimpleName(),
-                Map.of("écraser", new StompAction(15, 1),
-                        "dormir", new RestAction(20)));
+                Map.of(RestAction.getActionName(), new RestAction(new Stats(20, 5, 5)),
+                        StompAction.getActionName(), new StompAction(new Stats(-20, -10, 0),
+                                new Stats(0, -3, -1))
+                ));
     }
 
     /**
@@ -35,30 +40,6 @@ public class SpeciesActionRegistry {
      */
     public static Map<String, Action> getActionsForSpecies(String species) {
         return speciesActions.getOrDefault(species, Map.of());
-    }
-
-    /**
-     * Renvoie la chaine de caractères contenant toutes les actions par espèce.
-     */
-    public static String getSpeciesActions() {
-
-        if (speciesActions.isEmpty()) {
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        Set<String> speciesNames = speciesActions.keySet();
-        for (String speciesName : speciesNames) {
-            Map<String, Action> actionsMap = speciesActions.get(speciesName);
-            sb.append(speciesName).append(" : | ");
-            Set<String> actionNames = actionsMap.keySet();
-            for (String actionName : actionNames) {
-                sb.append(actionName).append(" | ");
-            }
-            sb.append("\n");
-        }
-
-        return sb.toString();
     }
 
     /**

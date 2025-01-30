@@ -2,51 +2,31 @@ package src.model.actions.binary;
 
 import src.model.actions.Action;
 import src.model.individual.Individual;
+import src.model.stats.Stats;
 
 /**
  * Définition des méthodes liées à l'action "mordre".
  *
  * @see Action
  */
-public class BiteAction extends Action {
-
-    private final int damage;
-    private final int energyCost;
+public class BiteAction extends BinaryAction {
 
     /**
      * Constructeur permettant de définir les points de dégâts pour l'action
      *
-     * @param damage     les points que perd la cible de l'action
-     * @param energyCost les points que perd la source de l'action en effectuant cette action
+     * @param damage les points que perd la cible de l'action
+     * @param cost   les points que perd la source de l'action en effectuant cette action
      */
-    public BiteAction(int damage, int energyCost) {
-        super();
-        this.damage = damage;
-        this.energyCost = energyCost;
+    public BiteAction(Stats damage, Stats cost) {
+        super(damage, cost);
     }
 
-    /**
-     * Vérifie que l'individu source et individu cible sont vivants.
-     *
-     * @param source individu source de l'action
-     * @param target individu cible de l'action
-     * @return true si les deux individus participant à l'action sont vivants, false sinon
-     */
-    public boolean validate(Individual source, Individual target) {
-        return source != target
-                && source.getStats().getVitality() > 0
-                && target.getStats().getVitality() > 0;
+    public void setActionMessage(Individual source, Individual target) {
+        actionMessage =
+                source.getName() + " mord " + target.getName() + " pour " + getDamage() + "  points de dégâts !";
     }
 
-    /**
-     * Définie le message qui décrit ce qui s'est passé et diminue les statistics de deux individus participants.
-     *
-     * @param source individu source de l'action
-     * @param target individu cible de l'action
-     */
-    public void execute(Individual source, Individual target) {
-        actionMessage = source.getName() + " mord " + target.getName() + " pour " + damage + "  points de dégâts !";
-        target.getStats().setVitality(target.getStats().getVitality() - damage);
-        source.getStats().setVitality(source.getStats().getVitality() - energyCost);
+    public static String getActionName() {
+        return "mordre";
     }
 }

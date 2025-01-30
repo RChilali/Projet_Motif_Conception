@@ -1,5 +1,8 @@
 package src.model.stats;
 
+/**
+ * Définition et gestion des statistiques d'un individu.
+ */
 public class Stats {
 
     private float vitality;
@@ -12,7 +15,6 @@ public class Stats {
         this.water = water;
     }
 
-    // Getters and setters
     public float getVitality() {
         return vitality;
     }
@@ -37,9 +39,15 @@ public class Stats {
         this.water = water;
     }
 
+    public void modifyStatsByDelta(Stats statsDelta) {
+        this.food += statsDelta.getFood();
+        this.water += statsDelta.getWater();
+        this.vitality += statsDelta.getVitality();
+    }
+
     @Override
     public String toString() {
         return "\u001B[32mStats{" + "vitality=" + vitality + ", food=" + food + ", water=" + water
-            + "}\u001B[0m";
+                + "}\u001B[0m";
     }
 }

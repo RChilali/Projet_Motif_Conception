@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * Modèle lié aux commandes liées aux individus.
+ *
  * @see SimulationModel
  */
 public class IndividualSimulationModel implements Subject, SimulationModel {
@@ -33,6 +34,7 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
 
     /**
      * Setter : définie le message que le modèle va communiquer à la vue.
+     *
      * @param outputToDisplay message contenant le changement de l'état du modèle
      */
     public void setOutputToDisplay(String outputToDisplay) {
@@ -48,32 +50,33 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
 
     /**
      * Ajoute un individu au modèle.
+     *
      * @param species espèce de l'individu
-     * @param name nom de l'individu
+     * @param name    nom de l'individu
      * @throws ReflectiveOperationException
      */
     public void addIndividual(String species, String name) throws ReflectiveOperationException {
 
         Class<? extends Individual> subClass = availableClasses.stream()
-            .filter(cls -> cls.getSimpleName().equals(species))
-            .findFirst()
-            .orElse(null);
+                .filter(cls -> cls.getSimpleName().equals(species))
+                .findFirst()
+                .orElse(null);
 
         if (subClass == null) {
-         setOutputToDisplay("Aucune espèce de ce type : " + species + "\n" + "Espèces : " +
+            setOutputToDisplay("Aucune espèce de ce type : " + species + "\n" + "Espèces : " +
                     availableClasses.stream()
-                        .map(Class::getSimpleName)
-                        .reduce((a, b) -> a + " " + b)
-                        .orElse(""));
+                            .map(Class::getSimpleName)
+                            .reduce((a, b) -> a + " " + b)
+                            .orElse(""));
             notifyObservers();
         } else if (subClass.getSimpleName().equals(species)) {
             if (verifyNameAvailability(name)) {
                 Stats stats = new Stats(100, 50, 50);
                 Individual individual = subClass.getDeclaredConstructor(String.class, String.class,
-                    String.class, Stats.class).newInstance(name, name, species, stats);
+                        String.class, Stats.class).newInstance(name, name, species, stats);
                 getIndividuals().add(individual);
                 setOutputToDisplay("Individual " + name + " added successfully\n" + name + " : "
-                    + individual.getStats());
+                        + individual.getStats());
                 notifyObservers();
             }
         }
@@ -91,7 +94,7 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
         Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(firstIndividual.getSpecies());
         Action action = actions.get(actionName);
         if (action == null) {
-            String speciesActions = SpeciesActionRegistry.getSpeciesActions();
+            String speciesActions = SpeciesActionRegistry.getSpeciesActions(firstIndividual.getSpecies());
             setOutputToDisplay("Actions possibles : " + speciesActions);
             notifyObservers();
             return;
@@ -104,14 +107,14 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
         }
         String actionMessage = action.getActionMessage();
         setOutputToDisplay("\u001B[32m" + actionMessage + "\u001B[0m\n" +
-            "Action successful between " + firstIndividualName + "\n" + firstIndividualName + " : "
-                + firstIndividual.getStats() + "\n");
+                "Action est réussie pour " + firstIndividualName + "\n" + firstIndividualName + " : "
+                + firstIndividual.getStats());
         notifyObservers();
     }
 
     @Override
     public void simulateAction(String firstIndividualName, String actionName,
-        String secondIndividualName) {
+                               String secondIndividualName) {
         Individual firstIndividual = getIndividualByName(firstIndividualName);
         Individual secondIndividual = getIndividualByName(secondIndividualName);
 
@@ -124,7 +127,7 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
         boolean actionIsSuccessful = firstIndividual.performAction(action, secondIndividual);
         if (!actionIsSuccessful) {
             setOutputToDisplay(
-                "Action n'est pas réussie entre " + firstIndividualName + " et " + secondIndividualName);
+                    "Action n'est pas réussie entre " + firstIndividualName + " et " + secondIndividualName);
             notifyObservers();
             return;
         }
@@ -152,10 +155,10 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
         for (Individual individual : individuals) {
             if (individual.getId().equals(id)) {
                 individual.setStats(
-                    new Stats(Float.parseFloat(life), Float.parseFloat(food),
-                        Float.parseFloat(water)));
+                        new Stats(Float.parseFloat(life), Float.parseFloat(food),
+                                Float.parseFloat(water)));
                 setOutputToDisplay("Individual " + id + " updated successfully\n" + id + " : "
-                    + individual.getStats());
+                        + individual.getStats());
                 notifyObservers();
                 return;
             }
@@ -181,6 +184,7 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
 
     /**
      * Vérifie que le nom de l'individu n'est pas encore pris
+     *
      * @param name nom de l'individu
      * @return true si le nom est unique, false sinon
      */

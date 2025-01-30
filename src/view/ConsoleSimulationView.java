@@ -10,6 +10,8 @@ import src.observer.Subject;
 import java.util.List;
 import java.util.Scanner;
 
+import static src.controller.IndividualController.*;
+
 public class ConsoleSimulationView implements SimulationView, Observer {
 
     private Scanner scanner = new Scanner(System.in);
@@ -18,7 +20,7 @@ public class ConsoleSimulationView implements SimulationView, Observer {
 
     private SimulationModel model;
 
-    public static final String EXIT_COMMAND = "exit";
+    public static final String EXIT_COMMAND = "quitter";
 
     public ConsoleSimulationView(SimulationController controller, SimulationModel model) {
         this.controller = (IndividualController) controller;
@@ -67,15 +69,34 @@ public class ConsoleSimulationView implements SimulationView, Observer {
         System.out.println("+-------------------------------------------------------+");
     }
 
+    private void displayWelcomeMessage() {
+        System.out.println("+-------------------------------------------------------+");
+        System.out.println("|              WELCOME TO THE SIMULATION                |");
+        System.out.println("+-------------------------------------------------------+\n");
+        displayCommandExemple("Exemple d'ajout d'individu :", ACTION_COMMAND + " (espèce) (nom)");
+        displayCommandExemple("Exemple d'action unaire :", ACTION_COMMAND + " (actionNom) (nom)");
+        displayCommandExemple("Exemple de mise à jour d'informations :", UPDATE_COMMAND + "  (nom) (vie) (nourriture) (eau)");
+        displayCommandExemple("Exemple de la suppression d'informations :", DELETE_COMMAND + "  (nom)");
+        displayCommandExemple("Exemple d'action binaire :", ACTION_COMMAND + " (actionNom) (nomSource) (nomCible)");
+        displayCommandExemple("Exemple d'affichage d'informations :", INFO_COMMAND + " (nom) ou " + INFO_COMMAND);
+        displayCommandExemple("Pour quitter la simulation :", EXIT_COMMAND);
+    }
+
+    private void displayCommandExemple(String explication, String commandPrototype) {
+        System.out.printf("%40s %-35s\n", explication, commandPrototype);
+    }
+
 
     private String getInput() {
-        System.out.print("ajouter,faire une action ou afficher info:\n");
+        System.out.print("\n" + ADD_COMMAND + " | " + DELETE_COMMAND + " | " + UPDATE_COMMAND + " | " +
+                ACTION_COMMAND + " | " + INFO_COMMAND + " | " + EXIT_COMMAND + " :\n");
         return scanner.nextLine();
     }
 
     @Override
     public void activateView() {
 
+        displayWelcomeMessage();
         String request = getInput();
 
         while (!EXIT_COMMAND.equals(request)) {

@@ -96,9 +96,9 @@ public class IndividualController implements SimulationController {
      */
     private void performAction(String[] requestArray) {
         if (requestArray.length == 3) {
-            model.simulateAction(requestArray[1], requestArray[2]);
+            model.simulateAction(requestArray[2], requestArray[1]);
         } else if (requestArray.length == 4) {
-            model.simulateAction(requestArray[1], requestArray[2], requestArray[3]);
+            model.simulateAction(requestArray[2], requestArray[1], requestArray[3]);
         } else {
             view.sendErrorOutput("Action incorrecte\n");
         }
