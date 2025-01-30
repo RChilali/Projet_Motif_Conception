@@ -1,8 +1,14 @@
 package src.model.actions.unary;
 
+import src.model.actions.Action;
 import src.model.individual.Individual;
 import src.model.stats.Stats;
 
+/**
+ * Définition des méthodes liées à l'action "dormir".
+ *
+ * @see Action
+ */
 public class RestAction extends UnaryAction {
 
     /**
@@ -16,9 +22,10 @@ public class RestAction extends UnaryAction {
 
     @Override
     public boolean validate(Individual source, Individual target) {
-        return source.getStats().getVitality() < 100 && source.getStats().getVitality() > 0;
+        return source.getStats().getVitality() < (100 - getCost().getVitality()) && source.getStats().getVitality() > 0;
     }
 
+    @Override
     public void setActionMessage(Individual source) {
         actionMessage = source.getName() + " dort";
     }

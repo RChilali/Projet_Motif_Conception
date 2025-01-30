@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Modèle lié aux commandes liées aux individus.
+ * Modèle lié aux commandes sur les individus.
  *
  * @see SimulationModel
  */
@@ -67,7 +67,7 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
                     availableClasses.stream()
                             .map(Class::getSimpleName)
                             .reduce((a, b) -> a + " " + b)
-                            .orElse(""));
+                            .orElse("") + "\n");
             notifyObservers();
         } else if (subClass.getSimpleName().equals(species)) {
             if (verifyNameAvailability(name)) {
@@ -75,8 +75,8 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
                 Individual individual = subClass.getDeclaredConstructor(String.class, String.class,
                         String.class, Stats.class).newInstance(name, name, species, stats);
                 getIndividuals().add(individual);
-                setOutputToDisplay("Individual " + name + " added successfully\n" + name + " : "
-                        + individual.getStats());
+                setOutputToDisplay("Individu " + name + " est ajouté avec succès\n" + name + " : "
+                        + individual.getStats() + "\n");
                 notifyObservers();
             }
         }
@@ -88,27 +88,36 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
         Individual firstIndividual = getIndividualByName(firstIndividualName);
 
         if (firstIndividual == null) {
+            setOutputToDisplay("Individu " + firstIndividualName + " n'existe pas\n");
+            notifyObservers();
             return;
         }
 
-        Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(firstIndividual.getSpecies());
+        String firstIndividualSpecies = firstIndividual.getSpecies();
+        if (firstIndividualSpecies == null) {
+            setOutputToDisplay("Espèce de l'individu " + firstIndividualName + " n'existe pas\n");
+            notifyObservers();
+            return;
+        }
+
+        Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(firstIndividualSpecies);
         Action action = actions.get(actionName);
         if (action == null) {
-            String speciesActions = SpeciesActionRegistry.getSpeciesActions(firstIndividual.getSpecies());
-            setOutputToDisplay("Actions possibles : " + speciesActions);
+            String speciesActions = SpeciesActionRegistry.getSpeciesActions(firstIndividualSpecies);
+            setOutputToDisplay("Actions possibles pour " + speciesActions);
             notifyObservers();
             return;
         }
         boolean actionIsSuccessful = firstIndividual.performAction(action);
         if (!actionIsSuccessful) {
-            setOutputToDisplay("Action n'est pas réussie pour " + firstIndividualName);
+            setOutputToDisplay("Action n'est pas réussie pour " + firstIndividualName + "\n");
             notifyObservers();
             return;
         }
         String actionMessage = action.getActionMessage();
         setOutputToDisplay("\u001B[32m" + actionMessage + "\u001B[0m\n" +
                 "Action est réussie pour " + firstIndividualName + "\n" + firstIndividualName + " : "
-                + firstIndividual.getStats());
+                + firstIndividual.getStats() + "\n");
         notifyObservers();
     }
 
@@ -122,22 +131,35 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
             return;
         }
 
-        Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(firstIndividual.getSpecies());
+        String firstIndividualSpecies = firstIndividual.getSpecies();
+        if (firstIndividualSpecies == null) {
+            return;
+        }
+
+        Map<String, Action> actions = SpeciesActionRegistry.getActionsForSpecies(firstIndividualSpecies);
         Action action = actions.get(actionName);
+
+        if (action == null) {
+            String speciesActions = SpeciesActionRegistry.getSpeciesActions(firstIndividualSpecies);
+            setOutputToDisplay("Actions possibles pour " + speciesActions);
+            notifyObservers();
+            return;
+        }
+
         boolean actionIsSuccessful = firstIndividual.performAction(action, secondIndividual);
         if (!actionIsSuccessful) {
             setOutputToDisplay(
-                    "Action n'est pas réussie entre " + firstIndividualName + " et " + secondIndividualName);
+                    "Action n'est pas réussie entre " + firstIndividualName + " et " + secondIndividualName + "\n");
             notifyObservers();
             return;
         }
         String actionMessage = action.getActionMessage();
-        setOutputToDisplay("\u001B[32m" + actionMessage + "\u001B[0m\n" +
-                "Action successful between " + firstIndividualName + " and " + secondIndividualName
+        setOutputToDisplay("\u001B[34m" + actionMessage + "\u001B[0m\n" +
+                "Action est réussie entre " + firstIndividualName + " et " + secondIndividualName
                 + "\n"
                 + firstIndividualName + " : " + firstIndividual.getStats() + "\n"
                 + secondIndividualName
-                + " : " + secondIndividual.getStats());
+                + " : " + secondIndividual.getStats() + "\n");
         notifyObservers();
     }
 
@@ -157,13 +179,13 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
                 individual.setStats(
                         new Stats(Float.parseFloat(life), Float.parseFloat(food),
                                 Float.parseFloat(water)));
-                setOutputToDisplay("Individual " + id + " updated successfully\n" + id + " : "
+                setOutputToDisplay("Individu " + id + " est modifié avec succès\n" + id + " : "
                         + individual.getStats());
                 notifyObservers();
                 return;
             }
         }
-        setOutputToDisplay("Individual " + id + " not found\n");
+        setOutputToDisplay("Individu " + id + " n'est pas trouvé\n");
         notifyObservers();
 
     }
@@ -173,12 +195,12 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
         for (Individual individual : individuals) {
             if (individual.getId().equals(id)) {
                 individuals.remove(individual);
-                setOutputToDisplay("Individual " + id + " deleted successfully\n");
+                setOutputToDisplay("Individu " + id + " est supprimé avec succès\n");
                 notifyObservers();
                 return;
             }
         }
-        setOutputToDisplay("Individual " + id + " not found\n");
+        setOutputToDisplay("Individu " + id + " n'est pas trouvé\n");
         notifyObservers();
     }
 

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * TODO
+ * Classe qui enregistre et fournit les actions disponibles pour différentes espèces.
  */
 public class SpeciesActionRegistry {
     private static final Map<String, Map<String, Action>> speciesActions = new HashMap<>();
@@ -36,14 +36,20 @@ public class SpeciesActionRegistry {
     }
 
     /**
-     * Renvoie toutes les actions d'une espèce.
+     * Renvoie toutes les actions associées à une espèce donnée.
+     *
+     * @param species Le nom de l'espèce.
+     * @return Une map contenant les actions associées à l'espèce spécifiée.
      */
     public static Map<String, Action> getActionsForSpecies(String species) {
         return speciesActions.getOrDefault(species, Map.of());
     }
 
     /**
-     * Renvoie la chaine de caractères contenant toutes les actions d'une espèce.
+     * Renvoie une chaîne de caractères listant toutes les actions disponibles pour une espèce donnée.
+     *
+     * @param species Le nom de l'espèce.
+     * @return Une chaîne de caractères contenant la liste des actions de l'espèce.
      */
     public static String getSpeciesActions(String species) {
 
@@ -53,7 +59,7 @@ public class SpeciesActionRegistry {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(species).append(" : | ");
+        sb.append(species).append(" :\n| ");
         Map<String, Action> actionsForSpecies = getActionsForSpecies(species);
         Set<String> actionNames = actionsForSpecies.keySet();
         for (String actionName : actionNames) {

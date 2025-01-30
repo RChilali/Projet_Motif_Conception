@@ -46,11 +46,15 @@ public class IndividualController implements SimulationController {
         String requestCommand = requestArray[0];
 
         if (ADD_COMMAND.equals(requestCommand)) {
+            if (requestArray.length < 3) {
+                view.displayControllerErrorOutput("Le nombre de paramètres pour l'action n'est pas correct\n");
+                return;
+            }
             try {
                 model.addIndividual(requestArray[1], requestArray[2]);
             } catch (ReflectiveOperationException e) {
-                view.sendErrorOutput(
-                        "Saisie incorrecte. Création de l'espèce " + requestArray[1] + " est impossible");
+                view.displayControllerErrorOutput(
+                        "Création de l'espèce " + requestArray[1] + " est impossible");
             }
             return;
         }
@@ -72,18 +76,22 @@ public class IndividualController implements SimulationController {
         if (DELETE_COMMAND.equals(requestCommand)) {
             if (requestArray.length == 2) {
                 model.deleteIndividual(requestArray[1]);
-                return;
+            } else {
+                view.displayControllerErrorOutput("Le nombre de paramètres pour l'action n'est pas correct\n");
             }
+            return;
         }
 
         if (UPDATE_COMMAND.equals(requestCommand)) {
             if (requestArray.length == 5) {
                 model.updateIndividual(requestArray[1], requestArray[2], requestArray[3], requestArray[4]);
-                return;
+            } else {
+                view.displayControllerErrorOutput("Le nombre de paramètres pour l'action n'est pas correct\n");
             }
+            return;
         }
 
-        view.sendErrorOutput("Saisie incorrecte. Aucune commande de ce type : " + requestCommand);
+        view.displayControllerErrorOutput("Aucune commande de ce type : " + requestCommand);
     }
 
     /**
@@ -92,7 +100,7 @@ public class IndividualController implements SimulationController {
      * <li>4 (commande "action", nom d'un individu, action, nom du deuxième individu) : action binaire s'exécute</li>
      * <li>Moins que 3 ou plus que 4 : message d'erreur est envoyé à la vue</li>
      *
-     * @param requestArray requête de l'utilisateur séparé par espaces et mis en tableau
+     * @param requestArray requête de l'utilisateur séparé par espaces et mis dans un tableau
      */
     private void performAction(String[] requestArray) {
         if (requestArray.length == 3) {
@@ -100,7 +108,7 @@ public class IndividualController implements SimulationController {
         } else if (requestArray.length == 4) {
             model.simulateAction(requestArray[2], requestArray[1], requestArray[3]);
         } else {
-            view.sendErrorOutput("Action incorrecte\n");
+            view.displayControllerErrorOutput("Le nombre de paramètres pour l'action n'est pas correct\n");
         }
     }
 

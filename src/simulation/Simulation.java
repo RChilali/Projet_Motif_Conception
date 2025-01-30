@@ -4,6 +4,9 @@ import src.controller.IndividualController;
 import src.model.simulation.IndividualSimulationModel;
 import src.view.ConsoleSimulationView;
 
+/**
+ * Point d'entrée dans le programme
+ */
 public class Simulation {
     public static void main(String[] args) {
         IndividualSimulationModel model = new IndividualSimulationModel();

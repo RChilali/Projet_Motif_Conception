@@ -4,13 +4,16 @@ import src.model.actions.Action;
 import src.model.individual.Individual;
 import src.model.stats.Stats;
 
+/**
+ * Définition d'action qui inclut deux individus.
+ */
 public abstract class BinaryAction extends Action {
 
     private final Stats damage;
     private final Stats cost;
 
     /**
-     * Constructeur permettant de définir les points de dégâts pour l'action
+     * Constructeur permettant de définir les points de dégâts pour l'action.
      *
      * @param damage les points que perd la cible de l'action
      * @param cost   les points que perd la source de l'action en effectuant cette action
@@ -22,7 +25,8 @@ public abstract class BinaryAction extends Action {
     }
 
     /**
-     * Définie le message qui décrit ce qui s'est passé et diminue les statistics de deux individus participants.
+     * Modifie le message qui décrit ce qui se passe entre les individus et diminue les statistics de ces
+     * deux individus participants.
      *
      * @param source individu source de l'action
      * @param target individu cible de l'action
@@ -34,7 +38,7 @@ public abstract class BinaryAction extends Action {
     }
 
     /**
-     * Définie le message qui décrit ce qui s'est passé et diminue les statistics de deux individus participants.
+     * Définie le message qui décrit ce qui se passe.
      *
      * @param source individu source de l'action
      * @param target individu cible de l'action

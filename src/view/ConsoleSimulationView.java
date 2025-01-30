@@ -12,16 +12,22 @@ import java.util.Scanner;
 
 import static src.controller.IndividualController.*;
 
+/**
+ * Définition de la vue qui s'occupe des affichages dans la console.
+ */
 public class ConsoleSimulationView implements SimulationView, Observer {
 
     private Scanner scanner = new Scanner(System.in);
-
     private IndividualController controller;
-
     private SimulationModel model;
-
     public static final String EXIT_COMMAND = "quitter";
 
+    /**
+     * Constructeur permettant d'associer un contrôleur et un modèle à la vue.
+     *
+     * @param controller contrôleur associé
+     * @param model      model associé
+     */
     public ConsoleSimulationView(SimulationController controller, SimulationModel model) {
         this.controller = (IndividualController) controller;
         this.model = model;
@@ -31,9 +37,12 @@ public class ConsoleSimulationView implements SimulationView, Observer {
         }
     }
 
+    /**
+     * Affiche la liste des individus et leurs caractéristiques.
+     */
     public void displayIndividuals() {
-        System.out.println("+--------------------- INDIVIDUALS ---------------------+");
-        System.out.println("| ID            | Name     | Species   | Vitality | Food | Water |");
+        System.out.println("+---------------------- INDIVIDUS ----------------------+");
+        System.out.println("| ID            | Nom       | Espèce        | Vitalité | Nourriture | Eau |");
         System.out.println("+-------------------------------------------------------+");
 
         List<Individual> individuals = model.getIndividuals();
@@ -50,14 +59,19 @@ public class ConsoleSimulationView implements SimulationView, Observer {
         System.out.println("+-------------------------------------------------------+");
     }
 
+    /**
+     * Affiche un individu et ses caractéristiques.
+     *
+     * @param id idéntifiant d'un individu
+     */
     public void displayIndividualById(String id) {
         Individual individual = model.getIndividualByName(id);
         if (individual == null) {
-            sendErrorOutput("Individual with ID " + id + " not found");
+            model.setOutputToDisplay("Individu " + id + " n'est pas trouvé");
             return;
         }
-        System.out.println("+--------------------- INDIVIDUAL ----------------------+");
-        System.out.println("| ID            | Name     | Species   | Vitality | Food | Water |");
+        System.out.println("+---------------------- INDIVIDU -----------------------+");
+        System.out.println("| ID            | Nom       | Espèce        | Vitalité | Nourriture | Eau |");
         System.out.println("+-------------------------------------------------------+");
         System.out.println(String.format("| %-13s | %-8s | %-9s | %8.1f | %4.1f | %5.1f |",
                 individual.getId(),
@@ -69,9 +83,12 @@ public class ConsoleSimulationView implements SimulationView, Observer {
         System.out.println("+-------------------------------------------------------+");
     }
 
+    /**
+     * Affiche le message de bienvenu.
+     */
     private void displayWelcomeMessage() {
         System.out.println("+-------------------------------------------------------+");
-        System.out.println("|              WELCOME TO THE SIMULATION                |");
+        System.out.println("|              BIENVENUE A LA SIMULATION                |");
         System.out.println("+-------------------------------------------------------+\n");
         displayCommandExemple("Exemple d'ajout d'individu :", ACTION_COMMAND + " (espèce) (nom)");
         displayCommandExemple("Exemple d'action unaire :", ACTION_COMMAND + " (actionNom) (nom)");
@@ -80,15 +97,22 @@ public class ConsoleSimulationView implements SimulationView, Observer {
         displayCommandExemple("Exemple d'action binaire :", ACTION_COMMAND + " (actionNom) (nomSource) (nomCible)");
         displayCommandExemple("Exemple d'affichage d'informations :", INFO_COMMAND + " (nom) ou " + INFO_COMMAND);
         displayCommandExemple("Pour quitter la simulation :", EXIT_COMMAND);
+        System.out.println();
     }
 
+    /**
+     * Affiche un exemple de la commande.
+     */
     private void displayCommandExemple(String explication, String commandPrototype) {
         System.out.printf("%40s %-35s\n", explication, commandPrototype);
     }
 
 
+    /**
+     * Affiche les commandes disponibles dans l'application.
+     */
     private String getInput() {
-        System.out.print("\n" + ADD_COMMAND + " | " + DELETE_COMMAND + " | " + UPDATE_COMMAND + " | " +
+        displayOutput(ADD_COMMAND + " | " + DELETE_COMMAND + " | " + UPDATE_COMMAND + " | " +
                 ACTION_COMMAND + " | " + INFO_COMMAND + " | " + EXIT_COMMAND + " :\n");
         return scanner.nextLine();
     }
@@ -105,16 +129,20 @@ public class ConsoleSimulationView implements SimulationView, Observer {
         }
     }
 
-    public void sendOutput(String output) {
+    @Override
+    public void displayOutput(String output) {
         System.out.println(output);
     }
 
-    public void sendErrorOutput(String output) {
-        sendOutput("[ERROR] : " + output);
+    /**
+     * Envoie l'erreur d'une des vérifications de saisie.
+     */
+    public void displayControllerErrorOutput(String output) {
+        displayOutput("\u001B[31m[SAISIE INCORRECTE] : " + output + "\u001B[0m");
     }
 
     @Override
     public void update() {
-        sendOutput(model.getOutputToDisplay());
+        displayOutput(model.getOutputToDisplay());
     }
 }

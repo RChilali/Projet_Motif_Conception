@@ -2,9 +2,6 @@ package src.controller;
 
 import src.view.SimulationView;
 
-/**
- * TODO
- */
 public interface SimulationController {
 
     /**
