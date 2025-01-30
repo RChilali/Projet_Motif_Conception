@@ -22,7 +22,7 @@ public class RestAction extends UnaryAction {
 
     @Override
     public boolean validate(Individual source, Individual target) {
-        return source.getStats().getVitality() < (100 - getCost().getVitality()) && source.getStats().getVitality() > 0;
+        return source.getStats().getVitality() < (100 - cost.getVitality()) && source.getStats().getVitality() > 0;
     }
 
     @Override

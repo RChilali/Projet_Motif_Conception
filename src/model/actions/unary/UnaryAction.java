@@ -9,15 +9,13 @@ import src.model.stats.Stats;
  */
 public abstract class UnaryAction extends Action {
 
-    private Stats cost;
-
     /**
      * Constructeur permettant de définir les points de regenération pour l'action.
      *
      * @param cost les points que reçoit l'individu-source de l'action
      */
     public UnaryAction(Stats cost) {
-        this.cost = cost;
+        super(cost);
     }
 
     public boolean validate(Individual source, Individual target) {
@@ -45,12 +43,5 @@ public abstract class UnaryAction extends Action {
      * @param source individu source de l'action
      */
     public abstract void setActionMessage(Individual source);
-
-    /**
-     * Renvoie les statistiques que perd ou gagne la victime en effectuant l'action.
-     */
-    public Stats getCost() {
-        return cost;
-    }
 
 }

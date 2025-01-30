@@ -13,12 +13,17 @@ public abstract class Action {
      */
     public String actionMessage;
 
+    protected final Stats cost;
+
+    protected Action(Stats cost) {
+        this.cost = cost;
+    }
+
     /**
      * Vérifie que l'individu source et l'individu cible de l'action sont vivants.
      *
      * @param source individu source de l'action
      * @param target individu cible de l'action
-     * @return TODO
      */
     public boolean validate(Individual source, Individual target) {
         return source != target && source.getStats().getVitality() > 0 && target.getStats().getVitality() > 0;

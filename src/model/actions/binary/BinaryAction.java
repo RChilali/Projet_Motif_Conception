@@ -10,7 +10,6 @@ import src.model.stats.Stats;
 public abstract class BinaryAction extends Action {
 
     private final Stats damage;
-    private final Stats cost;
 
     /**
      * Constructeur permettant de définir les points de dégâts pour l'action.
@@ -19,9 +18,8 @@ public abstract class BinaryAction extends Action {
      * @param cost   les points que perd la source de l'action en effectuant cette action
      */
     public BinaryAction(Stats damage, Stats cost) {
-        super();
+        super(cost);
         this.damage = damage;
-        this.cost = cost;
     }
 
     /**
@@ -49,7 +47,4 @@ public abstract class BinaryAction extends Action {
         return damage;
     }
 
-    public Stats getCost() {
-        return cost;
-    }
 }
