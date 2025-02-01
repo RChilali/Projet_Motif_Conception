@@ -29,11 +29,15 @@ public abstract class Action {
         return source != target && source.getStats().getVitality() > 0 && target.getStats().getVitality() > 0;
     }
 
-    public void execute(Individual source, Individual target) {
-
+    public boolean validate(Individual source) {
+        return source.getStats().getVitality() < (100 - cost.getVitality()) && source.getStats().getVitality() > 0;
     }
 
-    public void modifyStatistics(Individual individual, Stats statsDelta) {
+    public void execute(Individual source, Individual target) {}
+
+    public void execute(Individual source) {}
+
+    public void modifyStats(Individual individual, Stats statsDelta) {
         Stats stats = individual.getStats();
         stats.modifyStatsByDelta(statsDelta);
         individual.setStats(stats);

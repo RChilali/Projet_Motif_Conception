@@ -19,7 +19,7 @@ public abstract class Individual {
      * @param id      identifiant de l'individu
      * @param name    nom de l'individu
      * @param species espèce de l'individu
-     * @param stats   statistiques de l'individu
+     * @param stats   état de l'individu
      */
     public Individual(String id, String name, String species, Stats stats) {
         this.id = id;
@@ -50,14 +50,14 @@ public abstract class Individual {
     }
 
     /**
-     * Renvoie les statistiques de l'individu.
+     * Renvoie l'état de l'individu.
      */
     public Stats getStats() {
         return stats;
     }
 
     /**
-     * Setter : définie les statistiques de l'individu.
+     * Setter : définit l'état de l'individu.
      */
     public void setStats(Stats stats) {
         this.stats = stats;
@@ -86,8 +86,8 @@ public abstract class Individual {
      * @return true si l'action a été executé, false sinon
      */
     public boolean performAction(Action action) {
-        if (action != null && action.validate(this, null)) {
-            action.execute(this, null);
+        if (action != null && action.validate(this)) {
+            action.execute(this);
             return true;
         }
 

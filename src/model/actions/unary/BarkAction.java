@@ -20,6 +20,16 @@ public class BarkAction extends UnaryAction {
         super(cost);
     }
 
+    /**
+     * Vérifie la capacité d'un individu à aboyer
+     *
+     * @return True si l'individu peut effectuer l'action, False sinon.
+     */
+    @Override
+    public boolean validate(Individual source) {
+        return source.getStats().getFood() > 10 && super.validate(source);
+    }
+
     public void setActionMessage(Individual source) {
         actionMessage = source.getName() + " aboie !";
     }

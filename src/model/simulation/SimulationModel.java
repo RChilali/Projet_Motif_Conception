@@ -51,7 +51,7 @@ public interface SimulationModel {
     Individual getIndividualByName(String name);
 
     /**
-     * Met à jour les statistiques d'un individu.
+     * Met à jour l'état d'un individu.
      *
      * @param id    L'identifiant de l'individu.
      * @param life  La valeur de niveau de vie à mettre à jour.

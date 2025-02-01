@@ -1,7 +1,7 @@
 package src.model.stats;
 
 /**
- * Définition et gestion des statistiques d'un individu.
+ * Définition et gestion de l'état d'un individu.
  */
 public class Stats {
 
@@ -77,7 +77,7 @@ public class Stats {
     }
 
     /**
-     * Modifie les statistiques en appliquant une variation donnée.
+     * Modifie l'état en appliquant une variation donnée.
      *
      * @param statsDelta Objet Stats contenant les variations à appliquer.
      */
@@ -88,9 +88,9 @@ public class Stats {
     }
 
     /**
-     * Renvoie une représentation textuelle des statistiques.
+     * Renvoie une représentation textuelle de l'état d'un individu.
      *
-     * @return Une chaîne de caractères représentant les statistiques.
+     * @return Une chaîne de caractères représentant l'état.
      */
     @Override
     public String toString() {

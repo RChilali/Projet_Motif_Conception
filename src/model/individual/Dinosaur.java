@@ -13,7 +13,7 @@ public class Dinosaur extends Individual {
      * @param id      identifiant du dinosaure
      * @param name    nom du dinosaure
      * @param species espèce du dinosaure
-     * @param stats   statistiques du dinosaure
+     * @param stats   état du dinosaure
      */
     public Dinosaur(String id, String name, String species, Stats stats) {
         super(id, name, species, stats);

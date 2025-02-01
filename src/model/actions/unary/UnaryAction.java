@@ -18,23 +18,19 @@ public abstract class UnaryAction extends Action {
         super(cost);
     }
 
-    public boolean validate(Individual source, Individual target) {
+    public boolean validate(Individual source) {
         return source.getStats().getVitality() > 0;
     }
 
-    @Override
-    public void execute(Individual source, Individual target) {
-        execute(source);
-    }
-
     /**
-     * Modifie le message à afficher et diminue les statistiques d'individu participant.
+     * Modifie le message à afficher et altère l'état d'un individu participant.
      *
      * @param source individu source de l'action
      */
+    @Override
     public void execute(Individual source) {
         setActionMessage(source);
-        modifyStatistics(source, cost);
+        modifyStats(source, cost);
     }
 
     /**

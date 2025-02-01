@@ -23,7 +23,7 @@ public abstract class BinaryAction extends Action {
     }
 
     /**
-     * Modifie le message qui décrit ce qui se passe entre les individus et diminue les statistiques des
+     * Modifie le message qui décrit ce qui se passe entre les individus et altère l'état des
      * deux individus participants.
      *
      * @param source individu source de l'action
@@ -31,8 +31,8 @@ public abstract class BinaryAction extends Action {
      */
     public void execute(Individual source, Individual target) {
         setActionMessage(source, target);
-        modifyStatistics(target, damage);
-        modifyStatistics(source, cost);
+        modifyStats(target, damage);
+        modifyStats(source, cost);
     }
 
     /**

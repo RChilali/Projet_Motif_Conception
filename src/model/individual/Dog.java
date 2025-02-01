@@ -15,7 +15,7 @@ public class Dog extends Individual {
      * @param id      identifiant du chien
      * @param name    nom du chien
      * @param species espèce du chien
-     * @param stats   statistiques du chien
+     * @param stats   état du chien
      */
     public Dog(String id, String name, String species, Stats stats) {
         this(id, name, species, stats, Gender.male);
@@ -27,7 +27,7 @@ public class Dog extends Individual {
      * @param id      identifiant du chien
      * @param name    nom du chien
      * @param species espèce du chien
-     * @param stats   statistiques du chien
+     * @param stats   état du chien
      * @param gender  genre du chien
      */
     public Dog(String id, String name, String species, Stats stats, Gender gender) {

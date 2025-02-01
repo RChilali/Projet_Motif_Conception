@@ -115,9 +115,11 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
             return;
         }
         String actionMessage = action.getActionMessage();
-        setOutputToDisplay("\u001B[32m" + actionMessage + "\u001B[0m\n" +
+        setOutputToDisplay("==*==\n"
+                + actionMessage + "\n" +
                 "Action est réussie pour " + firstIndividualName + "\n" + firstIndividualName + " : "
-                + firstIndividual.getStats() + "\n");
+                + firstIndividual.getStats() + "\n"
+                + "==*==\n");
         notifyObservers();
     }
 
@@ -154,12 +156,16 @@ public class IndividualSimulationModel implements Subject, SimulationModel {
             return;
         }
         String actionMessage = action.getActionMessage();
-        setOutputToDisplay("\u001B[34m" + actionMessage + "\u001B[0m\n" +
-                "Action est réussie entre " + firstIndividualName + " et " + secondIndividualName
+        setOutputToDisplay("==*==\n"
+                + actionMessage + "\n"
+                + "Action est réussie entre " + firstIndividualName + " et " + secondIndividualName
                 + "\n"
                 + firstIndividualName + " : " + firstIndividual.getStats() + "\n"
                 + secondIndividualName
-                + " : " + secondIndividual.getStats() + "\n");
+                + " : " + secondIndividual.getStats()
+                + "\n"
+                + "==*==\n");
+
         notifyObservers();
     }
 

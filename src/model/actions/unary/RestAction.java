@@ -21,11 +21,6 @@ public class RestAction extends UnaryAction {
     }
 
     @Override
-    public boolean validate(Individual source, Individual target) {
-        return source.getStats().getVitality() < (100 - cost.getVitality()) && source.getStats().getVitality() > 0;
-    }
-
-    @Override
     public void setActionMessage(Individual source) {
         actionMessage = source.getName() + " dort";
     }
