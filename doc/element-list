@@ -1,0 +1,11 @@
+src.controller
+src.model.actions
+src.model.actions.binary
+src.model.actions.unary
+src.model.individual
+src.model.registry
+src.model.simulation
+src.model.stats
+src.observer
+src.simulation
+src.view
