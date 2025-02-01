@@ -20,4 +20,24 @@ public interface SimulationView {
      */
     void activateView();
 
+
+    /**
+     * Affiche la liste des individus et leurs caractéristiques.
+     */
+    void displayIndividuals();
+
+
+    /**
+     * Affiche un individu et ses caractéristiques.
+     *
+     * @param id identifiant d'un individu
+     */
+    void displayIndividualById(String id);
+
+
+    /**
+     * Envoie l'erreur d'une des vérifications de saisie.
+     */
+    void displayControllerErrorOutput(String output);
+
 }

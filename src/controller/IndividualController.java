@@ -2,7 +2,6 @@ package src.controller;
 
 
 import src.model.simulation.SimulationModel;
-import src.view.ConsoleSimulationView;
 import src.view.SimulationView;
 
 /**
@@ -17,7 +16,7 @@ public class IndividualController implements SimulationController {
     public static final String INFO_COMMAND = "info";
     public static final String DELETE_COMMAND = "supprimer";
     public static final String UPDATE_COMMAND = "modifier";
-    private ConsoleSimulationView view;
+    private SimulationView view;
     private final SimulationModel model;
 
     /**
@@ -31,7 +30,7 @@ public class IndividualController implements SimulationController {
 
     @Override
     public void setView(SimulationView view) {
-        this.view = (ConsoleSimulationView) view;
+        this.view = view;
     }
 
     @Override

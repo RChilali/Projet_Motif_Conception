@@ -1,6 +1,5 @@
 package src.view;
 
-import src.controller.IndividualController;
 import src.controller.SimulationController;
 import src.model.individual.Individual;
 import src.model.simulation.SimulationModel;
@@ -18,7 +17,7 @@ import static src.controller.IndividualController.*;
 public class ConsoleSimulationView implements SimulationView, Observer {
 
     private Scanner scanner = new Scanner(System.in);
-    private IndividualController controller;
+    private SimulationController controller;
     private SimulationModel model;
     public static final String EXIT_COMMAND = "quitter";
 
@@ -29,7 +28,7 @@ public class ConsoleSimulationView implements SimulationView, Observer {
      * @param model      model associé
      */
     public ConsoleSimulationView(SimulationController controller, SimulationModel model) {
-        this.controller = (IndividualController) controller;
+        this.controller = controller;
         this.model = model;
 
         if (model instanceof Subject) {
